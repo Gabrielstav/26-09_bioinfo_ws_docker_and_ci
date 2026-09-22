@@ -1,6 +1,11 @@
 name: Docker Lint and Build
 on: [push]
 
+- name: Downcase repository name
+  run: |
+    echo "IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/greeter:latest" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
+
+
 jobs:
   lint:
     name: Lint Dockerfile
