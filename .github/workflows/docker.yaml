@@ -1,11 +1,6 @@
 name: Docker Lint and Build
 on: [push]
 
-- name: Downcase repository name
-  run: |
-    echo "IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/greeter:latest" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
-
-
 jobs:
   lint:
     name: Lint Dockerfile
@@ -22,6 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint # wait for lint to complete successfully
     steps:
+      - id: lower-repo
+        name: Repository to lowercase
+        run: |
+          echo "repository=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
       - name: Check out the repo
         uses: actions/checkout@v7
       # action to login to GitHub container registry
